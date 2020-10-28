@@ -14,6 +14,7 @@ class Register extends React.Component{
             apellido:'',
             email:'',
             password:'',
+            password2:'',
             nombreInstitucion:''
         }
     }
@@ -35,16 +36,11 @@ class Register extends React.Component{
     onpasswordChange=(e)=>{
         this.setState({password:e.target.value})
     }
-    onemailChange=(e)=>{
-        this.setState({signedEmail:e.target.value})
-        console.log(e.target.value);
+    onpassword2Change=(e)=>{
+        this.setState({password2:e.target.value})
     }
-    onemailChange=(e)=>{
-        this.setState({signedEmail:e.target.value})
-        console.log(e.target.value);
-    }
-    onemailChange=(e)=>{
-        this.setState({signedEmail:e.target.value})
+    oninstitucionChange=(e)=>{
+        this.setState({nombreInstitucion:e.target.value})
         console.log(e.target.value);
     }
 
