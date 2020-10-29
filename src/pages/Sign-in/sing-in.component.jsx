@@ -37,7 +37,7 @@ class Signin extends React.Component{
         .then(response=>response.json())
         .then(user=>{
             if(user){
-              this.props.loadUser(user)
+              this.props.loadUser(user,'signin')
               this.props.onRouteChange('homepage')
             }
           })
@@ -89,7 +89,7 @@ class Signin extends React.Component{
                             <input className="input-btn" type="submit" value="Iniciar Sesión" onClick={this.Signin}/>
                         </div>
                         <div className='signin-input'>
-                            <p className='register-txt'>¿No tienes una cuenta? <span className='txt-span' onClick={()=>this.props.onRouteChange('register')}>Registrate</span></p>
+                            <p className='register-txt'>¿No tienes una cuenta? <span className='txt-span' onClick={()=>this.props.onRouteChange('register')}>Regístrate</span></p>
                         </div>
                     </div>
                 </div>

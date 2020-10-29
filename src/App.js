@@ -5,29 +5,33 @@ import Signin from './pages/Sign-in/sing-in.component';
 import Register from './pages/Register/register.component';
 import Homepage from './pages/HomePage/homepage.component';
 
+const initialState={
+  user:{
+    id:"",
+    nombre:"",
+    apellido:"",
+    password:"",
+    correo:"",
+    token:''
+  },
+  route:'signin'
+}
 
 class App extends React.Component{
   constructor(){
     super()
-    this.state={
-      user:{
-        id:"",
-        nombre:"",
-        apellido:"",
-        password:"",
-        correo:"",
-      },
-      route:'signin'
-    }
+    this.state=initialState
   }
 
   loadUser=(data)=>{
-    this.setState({user:{
-      id:data.id,
-      nombre:data.nombre,
-      apellido: data.apellido,
-      correo:data.correo
-    }})
+      this.setState({
+        user:{
+        id:data.id,
+        nombre:data.nombre,
+        apellido: data.apellido,
+        correo:data.correo,
+        token:data.token
+      }})
   }
   
   onRouteChange = (route) =>{
@@ -43,7 +47,6 @@ class App extends React.Component{
     const {route,user}=this.state
     return (
       <>
-
           {
           route==='homepage'?<Homepage usuario={this.state.user}/>
           :
@@ -52,7 +55,7 @@ class App extends React.Component{
           <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
           :(
             route==='register'?
-            <Register onRouteChange={this.onRouteChange}/>:
+            <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>:
             <></>
           )
           }

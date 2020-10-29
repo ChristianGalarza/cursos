@@ -14,34 +14,45 @@ class Register extends React.Component{
             apellido:'',
             correo:'',
             password:'',
-            password2:'',
             nombreInstitucion:''
         }
     }
 
-    
+    Register=()=>{
+        fetch('http://localhost:3000/manejador/usuario/signUp',{
+            method:'post',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                nombre:this.state.nombre,
+                apellido:this.state.apellido,
+                correo: this.state.correo,
+                password:this.state.password,
+                nombreInstitucion:this.state.nombreInstitucion
+            }) 
+        })
+        .then(response=>response.json())
+        .then(user=>{
+            if(user){
+                this.props.loadUser(user)
+                this.props.onRouteChange('signin')
+            }
+            })
+    }
     
     onnameChange=(e)=>{
         this.setState({nombre:e.target.value})
-        console.log(e.target.value);
     }
     onapellidoChange=(e)=>{
         this.setState({apellido:e.target.value})
-        console.log(e.target.value);
     }
     onemailChange=(e)=>{
-        this.setState({signedEmail:e.target.value})
-        console.log(e.target.value);
+        this.setState({correo:e.target.value})        
     }
     onpasswordChange=(e)=>{
         this.setState({password:e.target.value})
     }
-    onpassword2Change=(e)=>{
-        this.setState({password2:e.target.value})
-    }
     oninstitucionChange=(e)=>{
         this.setState({nombreInstitucion:e.target.value})
-        console.log(e.target.value);
     }
 
     //animacion hover para el lottie
@@ -91,21 +102,18 @@ class Register extends React.Component{
                             <label htmlFor="email" className='email-label'>Correo Electrónico</label>
                         </div>  
                         <div className='signin-input'>
-                            <input className='input-pass' placeholder='Constraseña' type="password" name="password" id="password" onChange={this.onpasswordChange}/>
+                            <input className='input-pass' title="La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula." placeholder='Constraseña' type="password" name="password" id="password" onChange={this.onpasswordChange}/>
                             <label htmlFor="password" className='pass-label'>Constraseña</label>
-                        </div>
-                        <div className='signin-input'>
-                            <input className='input-pass' placeholder='Confirmar Constraseña' type="password" name="password2" id="password2" onChange={this.onpassword2Change}/>
                         </div>
                         <div className='signin-input'>
                             <input className='input-institucion' placeholder='Nombre de la institución' type="text" name="institucion" id="institucion" onChange={this.oninstitucionChange}/>
                             <label htmlFor="institucion" className='institucion-label'>Institución</label>
                         </div>
                         <div className='signin-input'>
-                            <input className="input-btn" type="submit" value="Iniciar Sesión" onClick={()=>{alert('hola')}}/>
+                            <input className="input-btn" type="submit" value="Regístrate" onClick={this.Register}/>
                         </div>
                         <div className='signin-input'>
-                            <p className='register-txt'>¿Ya tienes una cuenta? <span className='txt-span' onClick={()=>this.props.onRouteChange('signin')}>Inicia sesión</span></p>
+                            <p className='register-txt'>¿Ya tienes una cuenta? <span className='txt-span' onClick={()=>this.props.onRouteChange('signin')}>Inicia Sesión</span></p>
                         </div>
                     </div>
                 </div>
