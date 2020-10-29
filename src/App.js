@@ -3,6 +3,7 @@ import React from 'react'
 import './App.css';
 import Signin from './pages/Sign-in/sing-in.component';
 import Register from './pages/Register/register.component';
+import Homepage from './pages/HomePage/homepage.component';
 
 
 class App extends React.Component{
@@ -12,12 +13,21 @@ class App extends React.Component{
       user:{
         id:"",
         nombre:"",
+        apellido:"",
         password:"",
-        email:"",
-        joined:''
+        correo:"",
       },
       route:'signin'
     }
+  }
+
+  loadUser=(data)=>{
+    this.setState({user:{
+      id:data.id,
+      nombre:data.nombre,
+      apellido: data.apellido,
+      correo:data.correo
+    }})
   }
   
   onRouteChange = (route) =>{
@@ -28,16 +38,18 @@ class App extends React.Component{
     // }
     this.setState({route:route});
   }
-  
 
   render(){
-    const {route}=this.state
+    const {route,user}=this.state
     return (
       <>
+
           {
+          route==='homepage'?<Homepage usuario={this.state.user}/>
+          :
           route==='signin'
           ?
-          <Signin onRouteChange={this.onRouteChange}/>
+          <Signin onRouteChange={this.onRouteChange} loadUser={this.loadUser}/>
           :(
             route==='register'?
             <Register onRouteChange={this.onRouteChange}/>:

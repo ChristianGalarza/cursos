@@ -19,11 +19,30 @@ class Signin extends React.Component{
     
     onemailChange=(e)=>{
         this.setState({signedEmail:e.target.value})
-        console.log(e.target.value);
     }
     onpasswordChange=(e)=>{
         this.setState({signedPassword:e.target.value})
     }
+
+    //fetch
+    Signin=()=>{
+        fetch('http://localhost:3000/manejador/usuario/signIn',{
+            method:'post',
+            headers:{'Content-Type':'application/json'},
+            body:JSON.stringify({
+                correo: this.state.signedEmail,
+                password:this.state.signedPassword,
+            }) 
+        })
+        .then(response=>response.json())
+        .then(user=>{
+            if(user){
+              this.props.loadUser(user)
+              this.props.onRouteChange('homepage')
+            }
+          })
+    }
+
 
     //animacion hover para el lottie
     animate=()=>{
@@ -67,7 +86,7 @@ class Signin extends React.Component{
                             <label htmlFor="password" className='pass-label'>Constraseña</label>
                         </div>
                         <div className='signin-input'>
-                            <input className="input-btn" type="submit" value="Iniciar Sesión" onClick={()=>{alert('hola')}}/>
+                            <input className="input-btn" type="submit" value="Iniciar Sesión" onClick={this.Signin}/>
                         </div>
                         <div className='signin-input'>
                             <p className='register-txt'>¿No tienes una cuenta? <span className='txt-span' onClick={()=>this.props.onRouteChange('register')}>Registrate</span></p>

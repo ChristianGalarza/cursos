@@ -12,7 +12,7 @@ class Register extends React.Component{
             isStopped:true,
             nombre:'',
             apellido:'',
-            email:'',
+            correo:'',
             password:'',
             password2:'',
             nombreInstitucion:''
