@@ -5,6 +5,7 @@ import Signin from './pages/Sign-in/sing-in.component';
 import Register from './pages/Register/register.component';
 import Homepage from './pages/HomePage/homepage.component';
 
+console.log("Niaaaa")
 const initialState={
   user:{
     id:"",
