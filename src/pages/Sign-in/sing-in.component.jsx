@@ -4,19 +4,46 @@ import Lottie from 'react-lottie'
 import animationData from '../../assets/lotties/signin'
 import './sign-in.styles.scss'
 
-
+const initialState={
+    isStopped:true,
+    signedEmail:'',
+    signedPassword:'',
+    // isSignedIn:false,
+    emailError:'',
+    passwordError:'',
+    userNotFoundError:''
+}
 class Signin extends React.Component{
     constructor(props){
         super(props)
-        this.state ={
-            isStopped:true,
-            signedEmail:'',
-            signedPassword:''
-        }
+        this.state=initialState
     }
 
-    
-    
+    // validateUser = () =>{
+    //     if(!this.state.isSignedIn){
+    //         this.setState({userNotFoundError:'Usuario no valido'})
+    //     }else{
+    //         console.log(initialState);
+    //     }
+    // }
+
+    validateForm=()=>{
+        const expEmail= RegExp(/^[a-zA-Z0-9.!#$%&'+=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/)
+        const expPassword= RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
+        if(!expEmail.test(this.state.signedEmail)){
+            this.setState({emailError:'Email inválido'})
+        }
+        else{
+            this.setState({emailError:initialState.emailError})
+        }
+        if(!expPassword.test(this.state.signedPassword)){
+            this.setState({passwordError:'Contraseña inválida'})
+        }
+        else{
+            this.setState({passwordError:initialState.passwordError})
+        }
+    }
+        
     onemailChange=(e)=>{
         this.setState({signedEmail:e.target.value})
     }
@@ -34,15 +61,21 @@ class Signin extends React.Component{
                 password:this.state.signedPassword,
             }) 
         })
-        .then(response=>response.json())
+        .then(response=>
+            response.json()
+        )
         .then(user=>{
-            if(user){
-              this.props.loadUser(user,'signin')
-              this.props.onRouteChange('Menu')
-            }
+            this.props.loadUser(user)
+            // this.setState({isSignedIn:true})
+            // const validateUser=this.validateUser()
+            this.props.onRouteChange('homepage')
           })
+          .catch(err=>{
+            // this.setState({isSignedIn:false})
+            // const validateUser=this.validateUser()
+          })
+          const validateForm=this.validateForm()
     }
-
 
     //animacion hover para el lottie
     animate=()=>{
@@ -84,6 +117,20 @@ class Signin extends React.Component{
                         <div className='signin-input'>
                             <input className='input-pass' placeholder='Constraseña' type="password" name="password" id="password" onChange={this.onpasswordChange}/>
                             <label htmlFor="password" className='pass-label'>Constraseña</label>
+                        </div>
+                        <div className='errors'>
+                            { 
+                                this.state.emailError?
+                                    this.state.emailError
+                                :null
+                            }
+                        </div>
+                        <div className='errors'>
+                            {
+                                this.state.passwordError?
+                                    this.state.passwordError
+                                :null
+                            }
                         </div>
                         <div className='signin-input'>
                             <input className="input-btn" type="submit" value="Iniciar Sesión" onClick={this.Signin}/>
