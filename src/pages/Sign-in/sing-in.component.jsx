@@ -8,7 +8,7 @@ const initialState={
     isStopped:true,
     signedEmail:'',
     signedPassword:'',
-    // isSignedIn:false,
+    isSignedIn:false,
     emailError:'',
     passwordError:'',
     userNotFoundError:''
@@ -19,28 +19,50 @@ class Signin extends React.Component{
         this.state=initialState
     }
 
-    // validateUser = () =>{
-    //     if(!this.state.isSignedIn){
-    //         this.setState({userNotFoundError:'Usuario no valido'})
-    //     }else{
-    //         console.log(initialState);
-    //     }
-    // }
+
+    validateUser = () =>{
+            // if(!this.state.isSignedIn){
+            //     this.setState({userNotFoundError:'Usuario no valido'})
+            // }else{
+            //     console.log(initialState);
+            // }
+        const expEmail= RegExp(/^[a-zA-Z0-9.!#$%&'+=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/)
+        const expPassword= RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
+        if(expPassword.test(this.state.signedPassword) && expEmail.test(this.state.signedEmail)){
+            if(!this.state.isSignedIn){
+                this.setState({userNotFoundError:'Usuario no registrado'})
+            }else{
+                this.setState({userNotFoundError:initialState.userNotFoundError})
+            }
+        }
+        else{
+            this.setState({userNotFoundError:initialState.userNotFoundError})
+        }
+        }
 
     validateForm=()=>{
         const expEmail= RegExp(/^[a-zA-Z0-9.!#$%&'+=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:.[a-zA-Z0-9-]+)$/)
         const expPassword= RegExp(/^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$/)
-        if(!expEmail.test(this.state.signedEmail)){
-            this.setState({emailError:'Email inválido'})
+        if(this.state.signedEmail){
+            if(!expEmail.test(this.state.signedEmail)){
+                this.setState({emailError:'Email inválido'})
+            }
+            else{
+                this.setState({emailError:initialState.emailError})
+            }    
+        }else{
+            this.setState({emailError:'Ingrese un correo'})
         }
-        else{
-            this.setState({emailError:initialState.emailError})
-        }
-        if(!expPassword.test(this.state.signedPassword)){
-            this.setState({passwordError:'Contraseña inválida'})
-        }
-        else{
-            this.setState({passwordError:initialState.passwordError})
+
+        if(this.state.signedPassword){
+            if(!expPassword.test(this.state.signedPassword)){
+                this.setState({passwordError:'Contraseña inválida'})
+            }
+            else{
+                this.setState({passwordError:initialState.passwordError})
+            }  
+        }else{
+            this.setState({passwordError:'Ingrese una constraseña'})
         }
     }
         
@@ -66,13 +88,13 @@ class Signin extends React.Component{
         )
         .then(user=>{
             this.props.loadUser(user)
-            // this.setState({isSignedIn:true})
-            // const validateUser=this.validateUser()
+            this.setState({isSignedIn:true})
+            const validateUser=this.validateUser()
             this.props.onRouteChange('homepage')
           })
           .catch(err=>{
-            // this.setState({isSignedIn:false})
-            // const validateUser=this.validateUser()
+            this.setState({isSignedIn:false})
+            const validateUser=this.validateUser()
           })
           const validateForm=this.validateForm()
     }
@@ -129,6 +151,13 @@ class Signin extends React.Component{
                             {
                                 this.state.passwordError?
                                     this.state.passwordError
+                                :null
+                            }
+                        </div>
+                        <div className='errors'>
+                            {
+                                this.state.userNotFoundError?
+                                    this.state.userNotFoundError
                                 :null
                             }
                         </div>
